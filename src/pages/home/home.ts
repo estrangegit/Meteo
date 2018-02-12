@@ -21,6 +21,7 @@ export class HomePage implements OnInit{
   private search = '';
   private weatherData = new WeatherData();
   private weatherForecastDatas = [];
+  private weatherForecastDatasDetails : any[] = [];
 
   constructor(public navCtrl: NavController,
                 private geolocation: Geolocation,
@@ -44,7 +45,9 @@ export class HomePage implements OnInit{
 
     this.weatherService.getForecast(this.search)
       .subscribe(data => {
-          this.weatherForecastDatas = this.getForecastDatas(data);
+          let forecastTemp = this.getForecastDatas(data);
+          this.weatherForecastDatas = forecastTemp['forecast'];
+          this.weatherForecastDatasDetails = forecastTemp['forecastDetails']
         },
         err=>{
           this.weatherForecastDatas = [];
@@ -73,7 +76,9 @@ export class HomePage implements OnInit{
 
       this.weatherService.getForecastCurrentPosition(latitude, longitude)
         .subscribe(data => {
-            this.weatherForecastDatas = this.getForecastDatas(data);
+            let forecastTemp = this.getForecastDatas(data);
+            this.weatherForecastDatas = forecastTemp['forecast'];
+            this.weatherForecastDatasDetails = forecastTemp['forecastDetails']
           },
           err=>{
             this.weatherForecastDatas = [];
@@ -97,13 +102,10 @@ export class HomePage implements OnInit{
     let tempDate = new Date(data['dt'] * 1000);
     tempDate = new Date(tempDate.getTime() + tempDate.getTimezoneOffset()*60000);
 
-    console.log(data);
-    console.log(tempDate.getHours());
-    console.log(tempDate.getMinutes());
-
     let weatherDataTemp = new WeatherData();
 
     weatherDataTemp.day = this.weekDay(data['dt']);
+    weatherDataTemp.time = tempDate.getHours() + "h" + (tempDate.getMinutes()<10?'0':'') + tempDate.getMinutes();
     weatherDataTemp.icon = openWeatherConfig.imgUrl + data['weather'][0].icon + '.png';
     weatherDataTemp.main = data['weather'][0].main;
     weatherDataTemp.city = data['name'];
@@ -113,51 +115,68 @@ export class HomePage implements OnInit{
     return weatherDataTemp;
   }
 
-  getForecastDatas(data): WeatherData[]{
+  getForecastDatas(data): any{
 
     let forecastDataTemp = [];
 
     let list = data['list'];
-
     let now = new Date();
 
-    let date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12);
-    let date2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 12);
-    let date3 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3, 12);
-
-    let date1Ok = false;
-    let date2Ok = false;
-    let date3Ok = false;
+    let dates = [];
+    let datesOk = [];
+    let minDates = [];
+    let maxDates = [];
 
 
-    for(let i = 0; i < list.length; i++) {
+    for(let i = 0; i < 5; i++){
+      let date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 1, 12);
+      let minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 1, 0);
+      let maxDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 2, 0);
 
-      let tempDate = new Date(list[i].dt*1000);
-      tempDate = new Date(tempDate.getTime() + tempDate.getTimezoneOffset()*60000);
+      dates.push(date);
+      minDates.push(minDate);
+      maxDates.push(maxDate);
+      datesOk.push(false);
+    }
 
-      if (!date1Ok && (tempDate.getTime() >= date1.getTime())) {
-        forecastDataTemp.push(this.getWeatherData(list[i]));
-        date1Ok = true;
+    let dateDetails: any[] = [];
+
+    for(let i = 0; i < 5; i++){
+
+      let dateDetailsForOneDay : WeatherData[] = [];
+
+      for(let j = 0; j < list.length; j++) {
+
+        let tempDate = new Date(list[j].dt*1000);
+        tempDate = new Date(tempDate.getTime() + tempDate.getTimezoneOffset()*60000);
+
+        if((tempDate.getTime()>= minDates[i].getTime()) && (tempDate.getTime()<maxDates[i].getTime())){
+          dateDetailsForOneDay.push(this.getWeatherData(list[j]));
+        }
       }
+      dateDetails.push(dateDetailsForOneDay);
+    }
 
-      if (!date2Ok && (tempDate.getTime() >= date2.getTime())) {
-        forecastDataTemp.push(this.getWeatherData(list[i]));
-        date2Ok = true;
-      }
+    for(let i = 0; i < 5; i++){
+      for(let j = 0; j < list.length; j++) {
 
-      if (!date3Ok && (tempDate.getTime() >= date3.getTime())) {
-        forecastDataTemp.push(this.getWeatherData(list[i]));
-        date3Ok = true;
+        let tempDate = new Date(list[j].dt*1000);
+        tempDate = new Date(tempDate.getTime() + tempDate.getTimezoneOffset()*60000);
+
+        if (!datesOk[i] && (tempDate.getTime() >= dates[i].getTime())) {
+          forecastDataTemp.push(this.getWeatherData(list[j]));
+          datesOk[i] = true;
+        }
       }
     }
 
-    return forecastDataTemp;
+    return {forecast: forecastDataTemp, forecastDetails: dateDetails};
   }
 
   private weekDay(UNIX_timestamp){
     let a = new Date(UNIX_timestamp * 1000);
 
-    let days = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'];
+    let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return days[a.getDay()];
   }
 }

@@ -31,8 +31,19 @@ page-home {
   .forecast {
     margin-top: 10%;
     align-items: center;
-    display: flex;
-    flex-direction: column;
+
+
+    ion-slide{
+      margin-bottom: 15%;
+    }
+  }
+
+  .forecastDayInformations {
+    margin-top: 20%;
+    box-shadow: 0 0 20px 1px #212145;
+    border-radius: 5px;
+    padding-top: 5%;
+    padding-bottom: 5%;
   }
 
   .forecast-buttons {
@@ -43,14 +54,19 @@ page-home {
 
     ion-icon{
       font-size: 3em;
-      color: #6699ff;
+      color: #212145;
       vertical-align: top;
+    }
+
+    .button-outline-md{
+      border-color: #212145;
+      color: #212145;
     }
   }
 
   .bigText {
     flex: 2;
-    font-size: 20px;
+    font-size: 1.5em;
     text-align: center;
     margin: 5px;
     color: #212145;
@@ -58,9 +74,13 @@ page-home {
 
   .mainText {
     flex: 1;
-    font-size: 16px;
+    font-size: 1em;
     text-align: center;
     color: #212145;
+  }
+
+  .smallText {
+    font-size:0.75em;
   }
 
   .icon {
