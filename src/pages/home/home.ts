@@ -93,6 +93,14 @@ export class HomePage implements OnInit{
   }
 
   getWeatherData(data): WeatherData {
+
+    let tempDate = new Date(data['dt'] * 1000);
+    tempDate = new Date(tempDate.getTime() + tempDate.getTimezoneOffset()*60000);
+
+    console.log(data);
+    console.log(tempDate.getHours());
+    console.log(tempDate.getMinutes());
+
     let weatherDataTemp = new WeatherData();
 
     weatherDataTemp.day = this.weekDay(data['dt']);
@@ -106,15 +114,16 @@ export class HomePage implements OnInit{
   }
 
   getForecastDatas(data): WeatherData[]{
+
     let forecastDataTemp = [];
 
     let list = data['list'];
 
     let now = new Date();
 
-    let date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12).getTime();
-    let date2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 12).getTime();
-    let date3 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3, 12).getTime();
+    let date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12);
+    let date2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 12);
+    let date3 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3, 12);
 
     let date1Ok = false;
     let date2Ok = false;
@@ -122,21 +131,26 @@ export class HomePage implements OnInit{
 
 
     for(let i = 0; i < list.length; i++) {
-      if (!date1Ok && ((list[i].dt * 1000) > date1)) {
+
+      let tempDate = new Date(list[i].dt*1000);
+      tempDate = new Date(tempDate.getTime() + tempDate.getTimezoneOffset()*60000);
+
+      if (!date1Ok && (tempDate.getTime() >= date1.getTime())) {
         forecastDataTemp.push(this.getWeatherData(list[i]));
         date1Ok = true;
       }
 
-      if (!date2Ok && ((list[i].dt * 1000) > date2)) {
+      if (!date2Ok && (tempDate.getTime() >= date2.getTime())) {
         forecastDataTemp.push(this.getWeatherData(list[i]));
         date2Ok = true;
       }
 
-      if (!date3Ok && ((list[i].dt * 1000) > date3)) {
+      if (!date3Ok && (tempDate.getTime() >= date3.getTime())) {
         forecastDataTemp.push(this.getWeatherData(list[i]));
         date3Ok = true;
       }
     }
+
     return forecastDataTemp;
   }
 
@@ -150,6 +164,7 @@ export class HomePage implements OnInit{
 
 class WeatherData {
   day: String;
+  time: String;
   icon: String;
   main: String;
   city: String;
