@@ -128,10 +128,10 @@ export class HomePage implements OnInit{
     let maxDates = [];
 
 
-    for(let i = 0; i < 5; i++){
-      let date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 1, 12);
-      let minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 1, 0);
-      let maxDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 2, 0);
+    for(let i = 0; i < 6; i++){
+      let date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i, 12);
+      let minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i, 0);
+      let maxDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i + 1, 0);
 
       dates.push(date);
       minDates.push(minDate);
@@ -141,7 +141,7 @@ export class HomePage implements OnInit{
 
     let dateDetails: any[] = [];
 
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < 6; i++){
 
       let dateDetailsForOneDay : WeatherData[] = [];
 
@@ -154,10 +154,15 @@ export class HomePage implements OnInit{
           dateDetailsForOneDay.push(this.getWeatherData(list[j]));
         }
       }
-      dateDetails.push(dateDetailsForOneDay);
+      if(i==0 && dateDetailsForOneDay.length!=0){
+        dateDetails.push(dateDetailsForOneDay);
+        forecastDataTemp.push(dateDetailsForOneDay[0]);
+      }else if(i!=0){
+        dateDetails.push(dateDetailsForOneDay);
+      }
     }
 
-    for(let i = 0; i < 5; i++){
+    for(let i = 1; i < 6; i++){
       for(let j = 0; j < list.length; j++) {
 
         let tempDate = new Date(list[j].dt*1000);
