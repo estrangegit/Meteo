@@ -1,6 +1,6 @@
 page-home {
   ion-content{
-    background-image: url('/assets/imgs/background.png');
+    background-image: url('../assets/imgs/background.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     -webkit-background-size: 100% auto;
@@ -12,9 +12,8 @@ page-home {
 
   .overlay {
     padding: 15px;
-    background-color: #000000;
+    background-color: #24478f;
     opacity: 0.5;
-    flex-direction: column;
     align-items: center;
   }
 
@@ -23,7 +22,7 @@ page-home {
   }
   input[type="text"] {
     color: #FFFFFF;
-    background-color: #000000;
+    background-color: #24478f;
     opacity: 0.5;
     border:none;
   }
@@ -65,15 +64,19 @@ page-home {
   }
 
   .bigText {
-    flex: 2;
     font-size: 1.5em;
     text-align: center;
     margin: 5px;
     color: #212145;
   }
 
+  .veryBigText {
+    text-align: center;
+    font-size: 2em;
+    color: #212145;
+  }
+
   .mainText {
-    flex: 1;
     font-size: 1em;
     text-align: center;
     color: #212145;
@@ -94,8 +97,8 @@ page-home {
 
 @font-face {
   font-family: 'weathericons';
-  src: url('/assets/font/weathericons-regular-webfont.eot');
-  src: url('/assets/font/weathericons-regular-webfont.eot?#iefix') format('embedded-opentype'), url('/assets/font/weathericons-regular-webfont.woff2') format('woff2'), url('/assets/font/weathericons-regular-webfont.woff') format('woff'), url('/assets/font/weathericons-regular-webfont.ttf') format('truetype'), url('/assets/font/weathericons-regular-webfont.svg#weather_iconsregular') format('svg');
+  src: url('../assets/font/weathericons-regular-webfont.eot');
+  src: url('../assets/font/weathericons-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../assets/font/weathericons-regular-webfont.woff2') format('woff2'), url('../assets/font/weathericons-regular-webfont.woff') format('woff'), url('../assets/font/weathericons-regular-webfont.ttf') format('truetype'), url('../assets/font/weathericons-regular-webfont.svg#weather_iconsregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -105,6 +108,9 @@ page-home {
   font-style: normal;
   font-weight: normal;
   line-height: 1;
+  font-size: 2em;
+  margin-top: 5%;
+  margin-bottom: 5%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

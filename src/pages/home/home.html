@@ -20,27 +20,26 @@
     <button ion-button round outline color="darkBlue" (click)="loadWeather(search)">Search</button>
   </div>
   <div *ngIf="data" class="forecast">
+    <div class="veryBigText">{{weatherData.city}}</div>
     <div text-center>
-      <i class="wi {{weatherData.icon}}"></i>
+      <span class="veryBigText">
+        <i class="wi {{weatherData.icon}}"></i>
+      </span>
       <label class="bigText">{{weatherData.main}}</label>
     </div>
-    <div class="mainText">{{weatherData.city}}</div>
     <div class="mainText">{{weatherData.description}}</div>
     <div class="bigText">{{weatherData.temp}} °C</div>
   </div>
   <div class="forecast">
     <div class="forecastDayInformations" *ngFor="let forecastData of weatherForecastDatas; let i = index">
       <div class="bigText">{{forecastData.day}}</div>
-      <div class="mainText">{{forecastData.description}} / {{forecastData.temp}} °C</div>
-      <div text-center>
-        <i class="wi {{forecastData.icon}}"></i>
-      </div>
       <ion-slides pager>
         <ion-slide *ngFor="let forecastDataDetails of weatherForecastDatasDetails[i]">
           <div text-center>
             <i class="wi {{forecastDataDetails.icon}}"></i>
           </div>
-          <div class="smallText">{{forecastDataDetails.time}} / {{forecastDataDetails.temp}} °C</div>
+          <div class="mainText">{{forecastDataDetails.description}} / {{forecastDataDetails.temp}} °C</div>
+          <div class="smallText">{{forecastDataDetails.time}}</div>
         </ion-slide>
       </ion-slides>
     </div>

@@ -114,7 +114,6 @@ export class HomePage implements OnInit{
 
     weatherDataTemp.day = this.weekDay(data['dt']);
     weatherDataTemp.time = tempDate.getHours() + "h" + (tempDate.getMinutes()<10?'0':'') + tempDate.getMinutes();
-//    weatherDataTemp.icon = openWeatherConfig.imgUrl + data['weather'][0].icon + '.png';
     weatherDataTemp.icon = icon;
     weatherDataTemp.main = data['weather'][0].main;
     weatherDataTemp.city = data['name'];
