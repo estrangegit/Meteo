@@ -21,7 +21,7 @@
   </div>
   <div *ngIf="data" class="forecast">
     <div text-center>
-      <img src="{{weatherData.icon}}"/>
+      <i class="wi {{weatherData.icon}}"></i>
       <label class="bigText">{{weatherData.main}}</label>
     </div>
     <div class="mainText">{{weatherData.city}}</div>
@@ -33,12 +33,12 @@
       <div class="bigText">{{forecastData.day}}</div>
       <div class="mainText">{{forecastData.description}} / {{forecastData.temp}} °C</div>
       <div text-center>
-        <img src="{{forecastData.icon}}"/>
+        <i class="wi {{forecastData.icon}}"></i>
       </div>
       <ion-slides pager>
         <ion-slide *ngFor="let forecastDataDetails of weatherForecastDatasDetails[i]">
           <div text-center>
-            <img src="{{forecastDataDetails.icon}}"/>
+            <i class="wi {{forecastDataDetails.icon}}"></i>
           </div>
           <div class="smallText">{{forecastDataDetails.time}} / {{forecastDataDetails.temp}} °C</div>
         </ion-slide>
