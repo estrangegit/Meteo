@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation";
 
 import { NavController } from 'ionic-angular';
-import {openWeatherConfig} from '../../app/openWeatherConfig';
 import {WeatherService} from '../../app/weather.service';
+import {weatherIcons} from '../../app/icons';
 
 
 @Component({
@@ -104,9 +104,17 @@ export class HomePage implements OnInit{
 
     let weatherDataTemp = new WeatherData();
 
+    let code = data['weather'][0].id;
+    let icon = weatherIcons[code].icon;
+
+    if(data['weather'][0].icon.slice(-1)=='d')
+      icon = 'wi-day-'+icon;
+    else if(data['weather'][0].icon.slice(-1)=='n')
+      icon = 'wi-night-'+icon;
+
     weatherDataTemp.day = this.weekDay(data['dt']);
     weatherDataTemp.time = tempDate.getHours() + "h" + (tempDate.getMinutes()<10?'0':'') + tempDate.getMinutes();
-    weatherDataTemp.icon = openWeatherConfig.imgUrl + data['weather'][0].icon + '.png';
+    weatherDataTemp.icon = icon;
     weatherDataTemp.main = data['weather'][0].main;
     weatherDataTemp.city = data['name'];
     weatherDataTemp.description = data['weather'][0].description;
