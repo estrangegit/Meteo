@@ -109,8 +109,13 @@ export class HomePage implements OnInit{
 
     if(data['weather'][0].icon.slice(-1)=='d')
       icon = 'wi-day-'+icon;
-    else if(data['weather'][0].icon.slice(-1)=='n')
+    else if(data['weather'][0].icon.slice(-1)=='n'){
       icon = 'wi-night-'+icon;
+      if(data['weather'][0].id==800){
+        icon = 'wi-night-clear';
+      }
+    }
+
 
     weatherDataTemp.day = this.weekDay(data['dt']);
     weatherDataTemp.time = tempDate.getHours() + "h" + (tempDate.getMinutes()<10?'0':'') + tempDate.getMinutes();
